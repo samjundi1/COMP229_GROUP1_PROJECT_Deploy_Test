@@ -4,11 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import styles from './auth.module.css'; // Import the CSS module
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Navbar from '../../components/navbar/Navbar_landing';
+import { useUserContext } from './UserContext'; // Import the context
 
 const SignIn = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const { updateUser } = useUserContext(); // Get the updateUser function from context
 
     useEffect(() => {
         console.log('SignIn component rendered');
@@ -21,9 +23,22 @@ const SignIn = () => {
                 email,
                 password
             });
-            console.log(response.data);
-            // Save the token if needed
-            localStorage.setItem('token', response.data.token);
+
+            // Destructure the response to get the user data
+            const { token, userAccount } = response.data;
+
+            // Update context with user data
+            updateUser({
+                userAccountId: userAccount._id,
+                token,
+                userType: userAccount.type,
+                userAccId: userAccount.userAccId,
+                userAccName: userAccount.userAccName,
+                userRole: userAccount.role
+            });
+            // Store the token and userAccountId in localStorage (optional)
+            localStorage.setItem('token', token);
+            localStorage.setItem('userAccountId', userAccount._id);
             // Redirect to the landing page
             navigate('/vendor-main');
         } catch (error) {

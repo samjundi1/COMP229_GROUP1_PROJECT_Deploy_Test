@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import image from '../../assets/mavericks_logo_small.png';
@@ -7,12 +7,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Link } from 'react-router-dom';
 //import SignOut from '../../sections/auth/SignOut.js';
-import { useEffect } from 'react';
+import { useUserContext } from '../../sections/auth/UserContext'; // Import the context
+//const userAccountId = localStorage.getItem('userAccountId');
+
+// Navbar to use when user signed in
 
 // Navbar to use when user signed in
 function SignedInNav() {
-
-const navigate = useNavigate();
+  const { userAccountId, userAccName,userAccId, userRole } = useUserContext(); // Access userAccountId,AccID, Name and role from context
+  console.log('userAcountId', userAccountId)
+  console.log('userAccName', userAccName)
+  console.log('userAccName', userAccId)
+  const navigate = useNavigate();
   const handleSignOut = async () => {
     try {
         // Make a request to the server to handle sign-out
@@ -26,8 +32,6 @@ const navigate = useNavigate();
     }
 };
     return (
-
-        
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
   <a class="navbar-brand" href="#">
@@ -53,7 +57,7 @@ const navigate = useNavigate();
     <div class="vendorDrop">
     <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {'VendorName'}
+          {userAccName ? `user: ${userAccName}` : 'Guest'}
           </a>
           <ul class="dropdown-menu">
             <li><Link class="dropdown-item" to="/vendor-profile-management">Manage Profile</Link></li>

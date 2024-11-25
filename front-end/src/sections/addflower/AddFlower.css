@@ -78,14 +78,3 @@ form textarea {
         font-size: 0.95rem;
     }
 }
-.btn{
-color: rgb(253, 253, 253);
-background-color: #81b1ce;
-margin: auto;
-display: flex;
-}
-.btn:hover{
-    color: lightblue;
-
-    background-color: rgb(58, 58, 129);
-}
